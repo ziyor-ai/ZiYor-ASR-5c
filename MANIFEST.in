@@ -1,0 +1,6 @@
+include README.md LICENSE NOTICE THIRD_PARTY.md config.example.json
+recursive-include requirements *.txt
+recursive-include docs *.md
+recursive-include docs *.json
+recursive-include scripts *.py *.sh
+recursive-include vendor *.py *LICENSE

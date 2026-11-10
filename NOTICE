@@ -1,0 +1,10 @@
+Meeting ASR Basic5
+Copyright 2026 Meeting ASR Basic5 contributors.
+
+This package extracts and simplifies audio chunking, alignment preservation and
+speaker processing concepts from the user-provided meeting-asr-code project.
+It is a separate basic pipeline, not the evaluated U08/E002 pipeline.
+
+The vendor/redimnet2 implementation is third-party code under MIT.
+Its original copyright notices remain in the files and in vendor/ReDimNet2-LICENSE.
+Neural model weights are not included. Their upstream licenses remain applicable.

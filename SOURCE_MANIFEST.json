@@ -1,0 +1,239 @@
+{
+  "version": "0.1.0",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 110,
+      "sha256": "6882ef9fa79bf88aace6b5a2a1882144cf3e507a4fb339eb6a4916847f01e16b",
+      "mode": "0o644"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "mode": "0o644"
+    },
+    {
+      "path": "MANIFEST.in",
+      "bytes": 238,
+      "sha256": "43fe45ff9995e5eff8c65fc66e133489560f705efa9d14bbd24c84f79ef4fd56",
+      "mode": "0o644"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 529,
+      "sha256": "85391fb0d9e93985d33bc80be8a2a8688ad2c2665ccfb975f96aa1a4d8675e97",
+      "mode": "0o644"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5378,
+      "sha256": "fe5f4d8a0887c80530db1046eb7695e2cbf97b32cfdc52d7c19e73a9bc40ea68",
+      "mode": "0o644"
+    },
+    {
+      "path": "THIRD_PARTY.md",
+      "bytes": 1691,
+      "sha256": "a54407ba3157147ce0ebe4e5da6650c1a967f3c734316ced3ff9a47ddb2726af",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/__init__.py",
+      "bytes": 217,
+      "sha256": "8d671799b361a6e2fd88f6cba4326e7fb8a9b46a77069b9b54b1c71c273b23d0",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/__main__.py",
+      "bytes": 48,
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/assembly.py",
+      "bytes": 6731,
+      "sha256": "f4fa937d13c0113d0e8840844a8518e60e4548b871460c4abe68d472e27c021a",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/audio.py",
+      "bytes": 3209,
+      "sha256": "a747a89df37c24401403af19f956dd579dab9855861d707b350f5ad1e29c9b9a",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/cli.py",
+      "bytes": 1670,
+      "sha256": "5adcf9ea7469e8af804b6bfe4cc068bed82f1039b64cee75a48d5876bf8aad1f",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/cluster.py",
+      "bytes": 5234,
+      "sha256": "82b6817dfe12cdd56081880f15baab4897f4724589f667452b4d30d505425842",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/common.py",
+      "bytes": 1203,
+      "sha256": "a7439d9f62491690e37e917f20a797a445f94427384b31ec4551e0c796ddcfd5",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/config.py",
+      "bytes": 3205,
+      "sha256": "1e6d976e1fb9c9cd2deb134d3358587f83d124ea43f19d60dcb9c5a3227c51b6",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/pipeline.py",
+      "bytes": 6457,
+      "sha256": "c312c5f4155051640f31fdf26653cd4c51808461e54e71d4735df0d9f9427dca",
+      "mode": "0o644"
+    },
+    {
+      "path": "basic5/workers.py",
+      "bytes": 9022,
+      "sha256": "e856a274dad25743ca1b3af85e0dd8ceaf558a3850922b791365675e17946420",
+      "mode": "0o644"
+    },
+    {
+      "path": "config.example.json",
+      "bytes": 799,
+      "sha256": "46eb29767cbfc6eb40c8bcfb5317c550c1d0a7ba1c724eb16808a2254fae17e6",
+      "mode": "0o644"
+    },
+    {
+      "path": "docs/architecture.md",
+      "bytes": 2928,
+      "sha256": "1be4f391bb6853eb2854a2744f5e3d0f369a797ba874b21b31ff92e41db7fe8c",
+      "mode": "0o644"
+    },
+    {
+      "path": "docs/validation.md",
+      "bytes": 2850,
+      "sha256": "d2bfdea068a42d59bd3580ff590a75447b4c056abe481af17f3d71e960ccc418",
+      "mode": "0o644"
+    },
+    {
+      "path": "docs/vendor-provenance.json",
+      "bytes": 2399,
+      "sha256": "68d1127c16475aa7b8baed63b8efd770d24c670124885486f9ea1ad99ab24ade",
+      "mode": "0o644"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 606,
+      "sha256": "90fe322f0917d95d59a81913d1818ed491767ad267049c3a060929bf916f2c1a",
+      "mode": "0o644"
+    },
+    {
+      "path": "requirements/base.txt",
+      "bytes": 14,
+      "sha256": "e77e7045d01a9431264f9262c6b199d8e7988c139276a5266a3cf689588ad66e",
+      "mode": "0o644"
+    },
+    {
+      "path": "requirements/qwen.txt",
+      "bytes": 107,
+      "sha256": "4357daf2b23e66f02390f0ff2347adde0860aba1500a12c0b4f4a95c56408eba",
+      "mode": "0o644"
+    },
+    {
+      "path": "requirements/speaker.txt",
+      "bytes": 136,
+      "sha256": "1d1fddd94bd03d27835b95f849fe31538e32f15bcbce6f7eb845e46f45255241",
+      "mode": "0o644"
+    },
+    {
+      "path": "scripts/download_models.py",
+      "bytes": 3628,
+      "sha256": "cf3368c116b3aab12a8e1e77a77efa0dfcf4dcd85db3c11dbbc1e25babada2c4",
+      "mode": "0o644"
+    },
+    {
+      "path": "scripts/setup.sh",
+      "bytes": 895,
+      "sha256": "080f091a4663b22d63914776df47813960fcf9f88510651c73b3cd20f59c7a7c",
+      "mode": "0o755"
+    },
+    {
+      "path": "tests/test_core.py",
+      "bytes": 9307,
+      "sha256": "68e5ff46dd9d69414edb608170e073c61f88327b8cd75262d5bd223e62069048",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/ReDimNet2-LICENSE",
+      "bytes": 1067,
+      "sha256": "3d5a4bf9936a7d09dd770588c0d7cb116fc16916a0310d71fb1fff5d64562101",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/__init__.py",
+      "bytes": 1710,
+      "sha256": "a1035c35f9707dfc1b943252b2627e367c92eb2ace06bbdb1a0e39000494753b",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/attention.py",
+      "bytes": 15397,
+      "sha256": "979627de7cb100102ab02b40d97c5d4a6c26db3f386220c873bb887937de7e21",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/blocks.py",
+      "bytes": 12825,
+      "sha256": "27d7b3dd4f184b28a33232d9877e33492ba2b3ab9ab5140b5157310dfb74f872",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/convnext.py",
+      "bytes": 4552,
+      "sha256": "0d82c2c448e5dcaed5311462b5a6f694126b56ed6d8f7dfa99bcf73469a7445d",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/features.py",
+      "bytes": 5503,
+      "sha256": "5ef8dfb33c3330bddb3c65f693bfe0df597056a287ced99450550e4f5ba34979",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/features_tf.py",
+      "bytes": 17553,
+      "sha256": "cef93647e5a4241c76dd00328200dc2fa5bf428b168f75d23284697a27983498",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/layernorm.py",
+      "bytes": 2833,
+      "sha256": "23900399027f6cae34b260e5778e076e0942ef886204b401221fe7c0c21bcabc",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/poolings.py",
+      "bytes": 11893,
+      "sha256": "f03849e5944e9fa6a7392b60cf3722e3e537a3e5cfd2988bd992c92ffc39a6a6",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/redim_structural.py",
+      "bytes": 3306,
+      "sha256": "93bae419bfdf11868c9e52dfb95578762b9c0a81e27a32ce930adcaefe457738",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/layers/resblocks.py",
+      "bytes": 3965,
+      "sha256": "f79fbc2c7a6d88e9aa5efc4f5764ad137eafe1f5481b33ff7ed8811ee6a80778",
+      "mode": "0o644"
+    },
+    {
+      "path": "vendor/redimnet2/redimnet2.py",
+      "bytes": 18673,
+      "sha256": "3b6bb2b9e8a5766d1286ea18b76f94cfacdd6e895cf4b996efbaf5c5f146dc5b",
+      "mode": "0o644"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "python": {
+    "qwen": ".venvs/qwen/bin/python",
+    "speaker": ".venvs/speaker/bin/python"
+  },
+  "models": {
+    "asr": "models/Qwen3-ASR-1.7B",
+    "aligner": "models/Qwen3-ForcedAligner-0.6B",
+    "vad": "models/fsmn-vad",
+    "speaker": "models/b0-vox2-lm.pt"
+  },
+  "device": "cuda:0",
+  "dtype": "bfloat16",
+  "language": "Chinese",
+  "threads": 4,
+  "max_audio_seconds": 14400,
+  "stage_timeout_seconds": 14400,
+  "max_new_tokens": 2048,
+  "chunk_seconds": 28,
+  "cut_search_seconds": 6,
+  "speaker_window_seconds": 2.0,
+  "speaker_hop_seconds": 1.0,
+  "min_speaker_window_seconds": 0.6,
+  "num_speakers": null,
+  "max_speakers": 8,
+  "max_cluster_windows": 2000,
+  "single_speaker_similarity": 0.8,
+  "min_word_speaker_coverage": 0.5,
+  "speaker_ambiguity_margin": 0.2,
+  "seed": 42
+}
