@@ -1,35 +1,23 @@
-# Basic5 v0.1.0 验证说明
+# Validation for Basic5 v0.1.0
 
-验证日期：2026-11-10。验证范围是源码、安装包和 CPU 上可检查的程序行为。**没有完成真实模型端到端推理，也没有 Basic5 的 AliMeeting 准确率成绩。**
+The baseline checks recorded on November 10, 2026 covered source code, Python packaging, and behavior that can be tested on a CPU. They ran on macOS arm64 with Python 3.12.13, NumPy 1.26.4, SciPy 1.17.1, scikit-learn 1.9.0, and FFmpeg.
 
-## 已实际执行
+| Check | Recorded result |
+| --- | --- |
+| Source regression suite | 20 tests passed |
+| Clean wheel installs | The same 20 tests passed outside the source tree in two separate environments |
+| Installed CLI | `components` listed five components and `--help` succeeded |
+| Linux runtime dependency resolution | Both Python 3.12 inference environments resolved under the PyTorch 2.10.0 constraint |
+| Source integrity | Python sources parsed; hashes for 11 vendored ReDimNet2 files matched the extraction record |
+| Packaging | The wheel included the vendored ReDimNet2 modules and MIT license; the source distribution included the provenance record; `bash -n` accepted the setup script |
 
-环境：macOS arm64、Python 3.12.13、NumPy 1.26.4、SciPy 1.17.1、scikit-learn 1.9.0，以及本机 FFmpeg。
+The tests cover audio conversion and chunk coverage, rejection of oversized input, text and punctuation preservation, alignment fallback, ambiguous speakers, clustering edge cases, output serialization, overwrite protection, and subprocess cleanup on timeout. The export integration test supplies stage results as fixtures; it checks how the pipeline handles those results.
 
-| 检查 | 实际结果 |
-|---|---|
-| 源码回归 | 20 项通过，测试框架记录 3.754 秒 |
-| 全新环境 A：从 wheel 安装后在源码树外运行 | 20 项通过，进程耗时 63.703 秒 |
-| 环境 A：再次执行 | 20 项通过，进程耗时 3.170 秒 |
-| 独立全新环境 B | 20 项通过，进程耗时 64.381 秒 |
-| 两个干净环境的 CLI | `components` 返回恰好 5 项；`--help` 成功；导入路径属于已安装包 |
-| 依赖元数据 | 两套 Linux x86_64 / Python 3.12 需求在 PyTorch 2.10.0 约束下可解析；这不代表完成了 CUDA 安装或模型推理 |
-| 语法与第三方源码 | 23 个 Python 文件可解析；11 个 ReDimNet 文件与记录及提取来源的 SHA256 相符 |
-| 分发文件 | wheel 包含 ReDimNet 层实现和 MIT 许可证；源码分发包含来源记录；安装脚本通过 `bash -n` |
+## Open validation work
 
-每次都是同一组 20 项行为测试，不将重复运行算成新测试或新方案。冷环境时间包含解释器与科学计算库首次加载，不能用作 ASR 处理速度。
+- Run all four models on a real recording and review the resulting transcript, labels, and timestamps.
+- Measure peak GPU and host memory, runtime relative to recording duration, and installation footprint on Linux/NVIDIA.
+- Measure character error rate (CER), concatenated minimum-permutation CER (cpCER), diarization error rate (DER), and word boundary error against annotated data.
+- Characterize performance on overlapping speech, brief interjections, distant microphones, and long meetings.
 
-测试检查了：每个音频样本连续覆盖一次、切点舍入不会停滞、FFmpeg 第一声道转换、超长输入拒绝、文字与标点完整保留、异常对齐回退、零时长、归人不确定性、重复活动不重复计分、孤立声纹图、中心相消、静音不被填成发言、配置拒绝、输出序列化、拒绝覆盖、失败状态以及真实子进程超时清理。
-
-导出集成用例使用预先给定的阶段结果；它验证程序如何处理结果，**不模拟或证明任何模型识别能力**。模型工作进程是真实 SDK 适配代码，没有用测试桩替代正式转写入口。
-
-## 尚未验证
-
-- 本版四个模型一起跑真实录音的端到端结果。
-- Linux / NVIDIA 上完整安装、显存峰值、内存峰值和实时率。
-- AliMeeting 的 CER、cpCER、DER，以及人工标注下的词时间误差。
-- 重叠发言、极短插话、长会议等条件下的实际质量。
-
-因此本交付是可供继续验证和开源整理的基础版源码，不宣称已经验证模型效果、达到某个显存门槛或超过任何 benchmark。源码不继承 U08/E002 的实验成绩。
-
-复核时先按 README 安装并运行 `doctor`，再用一段有已知文字和两名说话人的短录音执行 `transcribe`。应检查逐字稿、说话人、时间、`quality_flags` 和进程日志；只有真实模型测试通过，才能将端到端推理改标为已验证。
+To reproduce the CPU checks, follow [Contributing](../CONTRIBUTING.md#run-the-tests). For an inference smoke test, follow the [quick start](../README.md#-quick-start), then transcribe a short recording with two known speakers and a reference transcript. Compare the transcript and speaker changes to the recording, and inspect `quality_flags` and the stage logs before reporting results.

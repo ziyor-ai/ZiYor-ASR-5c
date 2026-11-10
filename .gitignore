@@ -1,4 +1,8 @@
 .venvs/
+.venv/
+.env
+.env.*
+!.env.example
 models/
 outputs/
 config.json

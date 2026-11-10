@@ -3,8 +3,14 @@
   "files": [
     {
       "path": ".gitignore",
-      "bytes": 110,
-      "sha256": "6882ef9fa79bf88aace6b5a2a1882144cf3e507a4fb339eb6a4916847f01e16b",
+      "bytes": 143,
+      "sha256": "a8cf29e7f93746f0c6975331133c1966542dcbb450e1fb37e48de5881e746bd2",
+      "mode": "0o644"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 1453,
+      "sha256": "57f71b310dedcbc2681640498ddb7df3057e9aac2362822a4349eef6f479ae09",
       "mode": "0o644"
     },
     {
@@ -15,8 +21,8 @@
     },
     {
       "path": "MANIFEST.in",
-      "bytes": 238,
-      "sha256": "43fe45ff9995e5eff8c65fc66e133489560f705efa9d14bbd24c84f79ef4fd56",
+      "bytes": 264,
+      "sha256": "691e6015d73e2b1a2b630b5530dfc3287d3e5953460663067c7b8b80b5a1d696",
       "mode": "0o644"
     },
     {
@@ -27,14 +33,20 @@
     },
     {
       "path": "README.md",
-      "bytes": 5378,
-      "sha256": "fe5f4d8a0887c80530db1046eb7695e2cbf97b32cfdc52d7c19e73a9bc40ea68",
+      "bytes": 5177,
+      "sha256": "4999352270150ed7553b72cd3c62a5986dfbf1cbae2de8716da915827ebba5fe",
       "mode": "0o644"
     },
     {
       "path": "THIRD_PARTY.md",
-      "bytes": 1691,
-      "sha256": "a54407ba3157147ce0ebe4e5da6650c1a967f3c734316ced3ff9a47ddb2726af",
+      "bytes": 2043,
+      "sha256": "93bd8330ede6bcca01eab917d30335d54a91e02fa060b3e34e4252a73a105ed7",
+      "mode": "0o644"
+    },
+    {
+      "path": "VISION.md",
+      "bytes": 1462,
+      "sha256": "84a0b3c5a4897b8f353a4e4731386c58231fae1b33d9649d7c910eb292a5fed1",
       "mode": "0o644"
     },
     {
@@ -105,14 +117,14 @@
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 2928,
-      "sha256": "1be4f391bb6853eb2854a2744f5e3d0f369a797ba874b21b31ff92e41db7fe8c",
+      "bytes": 2973,
+      "sha256": "e62b0f7169f76e491689321e44f3d398c6b1ca5a64e8acc3821a242920ffdaee",
       "mode": "0o644"
     },
     {
       "path": "docs/validation.md",
-      "bytes": 2850,
-      "sha256": "d2bfdea068a42d59bd3580ff590a75447b4c056abe481af17f3d71e960ccc418",
+      "bytes": 2244,
+      "sha256": "be6fab8acbc31aab6d4c9c0d37d98cdb37686db64c1bb4dc3a8fe1034c7f5ece",
       "mode": "0o644"
     },
     {

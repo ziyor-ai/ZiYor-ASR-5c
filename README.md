@@ -1,41 +1,36 @@
-# Meeting ASR Basic5
+# ZiYor-ASR-5c · Meeting ASR Basic5
 
-**五项核心技术的中文会议转写基础版。** 将本地录音或视频转成带文字、说话人和时间的 JSON、TXT、SRT。这里的“基础版”指功能组合精简，不是限制硬件或故意降低识别质量。
+**Turn a local meeting recording into a transcript with speaker labels, timestamps, and subtitles.**
 
-| 核心技术 | 作用 |
-|---|---|
-| Qwen3-ASR-1.7B | 识别文字 |
-| FSMN-VAD | 检测语音区间 |
-| ReDimNet2-B0 | 提取声纹 |
-| 谱聚类 | 估计人数并串联同一说话人 |
-| Qwen3-ForcedAligner-0.6B | 给已有文字标词时间 |
+[![Python 3.11 to 3.13 for the core package](https://img.shields.io/badge/Python-3.11%20to%203.13-blue)](pyproject.toml)
+[![Apache 2.0 for project code](https://img.shields.io/badge/Project%20license-Apache%202.0-green)](LICENSE)
 
-这是一套重新组合的基础流程。**尚未测得本版本的 AliMeeting CER/cpCER/DER，不引用 U08 或 E002 的分数。** 不含多模型融合、大模型复核、语音分离和热词检索。详细取舍见 [架构说明](docs/architecture.md)。
+Basic5 is a five-component transcription baseline for Chinese meetings. The configuration also accepts English. Once the models are downloaded, inference runs locally. Speaker labels such as `S01` group turns within one recording.
 
-## 运行条件
+## 🚀 Quick start
 
-- Linux x86_64、Python 3.12、FFmpeg、NVIDIA 驱动。安装脚本默认 PyTorch 2.10 / CUDA 12.8 构建。
-- 没有承诺固定 8GB 显存门槛；这是功能基础版。实际峰值随录音、模型和运行环境变化，运行日志会记录。
-- Qwen 与说话人依赖分开安装，避免 Transformers 版本互相覆盖；模型顺序加载。
-- 可将配置改成 `device: "cpu"`、`dtype: "float32"` 做 CPU 尝试，但未提供 CPU 速度保证。Apple MPS 不在本版支持范围。
-- 模型单独下载，磁盘需要同时容纳模型、两套推理依赖和中间音频；本次未测量完整安装占用。
-
-## 安装
+For the inference setup, use **Linux x86-64, Python 3.12 with venv support, FFmpeg, and an NVIDIA driver compatible with CUDA 12.8**. The setup script defaults to PyTorch 2.10 CUDA 12.8 wheels. Allow disk space for the separate runtimes, model weights, and intermediate audio.
 
 ```bash
-# Ubuntu/Debian：安装 Python 3.12/venv 和 FFmpeg 后，在项目目录执行
+git clone https://github.com/ziyor-ai/ZiYor-ASR-5c.git
+cd ZiYor-ASR-5c
 bash scripts/setup.sh
-
-# 执行模型下载；首次下载需要网络。
 .venvs/core/bin/python scripts/download_models.py --config config.json
-
-# 检查两个模型环境的实际导入和 CUDA，不执行转写
 .venvs/core/bin/python -m basic5 doctor --config config.json
 ```
 
-安装脚本不会下载或编译 vLLM/FlashInfer。使用已有模型时，跳过下载，编辑 `config.json` 的四个本地模型路径和两个解释器路径即可。相对路径基于配置文件所在目录。ReDimNet 必须使用官方 `b0-vox2-lm.pt`，代码会检查 SHA256。
+`doctor` checks worker imports and the configured device without running inference. Then transcribe a recording:
 
-仅安装源码／查看组件，不需要 GPU 或模型：
+```bash
+.venvs/core/bin/python -m basic5 transcribe /path/to/meeting.wav \
+  --config config.json --output outputs/meeting-001
+```
+
+FFmpeg can also read formats such as MP3 and MP4. Basic5 uses the first audio stream and its first channel. Each run requires a new output directory and refuses to overwrite an existing one.
+
+If you already have the models, skip the download and set the four model paths in `config.json`. If you manage the worker environments yourself, set the two interpreter paths as well. Relative paths are resolved from the config file. The ReDimNet checkpoint must match the SHA-256 of the official `b0-vox2-lm.pt` file.
+
+To inspect the CLI without installing the model runtimes or downloading weights:
 
 ```bash
 python3.12 -m venv .venvs/core
@@ -43,54 +38,50 @@ python3.12 -m venv .venvs/core
 .venvs/core/bin/python -m basic5 components
 ```
 
-## 转写
+## 🧩 How it works
 
-```bash
-.venvs/core/bin/python -m basic5 transcribe /path/to/meeting.wav \
-  --config config.json --output outputs/meeting-001
-
-# MP3、MP4 等由 FFmpeg 读取第一条音轨的第一声道
-.venvs/core/bin/python -m basic5 transcribe /path/to/meeting.mp4 \
-  --config config.json --output outputs/meeting-002
+```mermaid
+flowchart LR
+    A["Local audio or video"] --> P["Normalize and plan chunks"]
+    P --> Q["1. Qwen3 ASR"]
+    P --> V["2. FSMN VAD"]
+    V --> E["3. ReDimNet2 embeddings"]
+    E --> C["4. Spectral clustering"]
+    P --> T["5. Qwen3 forced alignment"]
+    Q --> T
+    T --> O["Associate speakers and export"]
+    C --> O
+    O --> F["JSON · TXT · SRT"]
 ```
 
-输出目录必须是新目录，重复执行会拒绝覆盖。模型推理阶段只使用本地模型；不会上传录音或调用云 ASR。阶段失败会返回非零退出码，并在 `run.json` 标记失败，不会输出假的成功记录。可按 Ctrl-C 终止，程序会清理自己的模型子进程。
+Qwen3-ASR-1.7B recognizes speech, FSMN-VAD finds speech intervals, and ReDimNet2-B0 embeds short voice windows. Spectral clustering groups those windows by speaker, and Qwen3-ForcedAligner-0.6B supplies timestamps for the recognized text. The three inference stages run in order in separate processes, using isolated Qwen and speaker environments. See [architecture](docs/architecture.md) for the alignment and speaker assignment rules.
 
-| 输出 | 用途 |
-|---|---|
-| `transcript.json` | 完整文字、词时间、说话人、分人区间、对齐与归人不确定性 |
-| `transcript.txt` | 可读逐字稿，保留所有文字 |
-| `transcript.srt` | 字幕；无法表达的零时长条目不写入，完整稿以 JSON/TXT 为准 |
-| `run.json` | 实际组件、配置、阶段耗时、输入与输出 SHA256、成功或失败状态 |
-| `logs/` | 每个阶段的日志、PID、命令和退出记录 |
-| `work/` | 标准化录音及各阶段输出，用于复核；包含私人录音，不要提交到公开仓库 |
+## 📄 Outputs
 
-几个主要参数：
+| Path | Contents |
+| --- | --- |
+| `transcript.json` | Structured transcript, word times, speaker turns, and quality flags |
+| `transcript.txt` | Readable transcript with speaker labels and times |
+| `transcript.srt` | Subtitles; entries without a representable duration are omitted |
+| `run.json` | Run status, configuration, stage durations, and file hashes |
+| `logs/`, `work/` | Process logs, normalized audio, and intermediate results |
 
-- `num_speakers`: 默认 `null`，自动估计；已知人数可设为整数。
-- `max_speakers`: 默认 8；过大可能放大短窗噪声。
-- `max_audio_seconds`: 输入最长时长，超出会明确失败，不悄悄截断。
-- `stage_timeout_seconds`: 每个模型阶段的时间上限，默认 4 小时。
-- `chunk_seconds`: 默认 28 秒，`cut_search_seconds: 6` 在块尾前 6 秒寻找较低能量切点；所有音频样本连续覆盖。
+Keep the run directory private if the source recording is private. A failed stage produces a nonzero exit code and records failure in `run.json`. Press Ctrl-C to stop a run and clean up its worker processes.
 
-## 能力边界
+## ⚙️ Configuration
 
-这是标准串联方案，自动人数和换人边界属于估计。重叠发言、很短的插话、远场噪声仍可能识别不全或归人错误。没有采用“先分离再识别”，不会声称已经完整恢复多人同时发言。
+| Setting | Default and use |
+| --- | --- |
+| `language` | `Chinese`; set to `English` for English audio |
+| `num_speakers`, `max_speakers` | Estimate the count by default (`null`) with a limit of 8; set `num_speakers` when the count is known |
+| `chunk_seconds`, `cut_search_seconds` | 28-second target; search the final 6 seconds for a quieter cut |
+| `max_audio_seconds`, `stage_timeout_seconds` | Four hours each; limits apply to input length and to each worker stage, respectively |
+| `device`, `dtype` | `cuda:0` and `bfloat16`; `cpu` with `float32` is an experimental fallback |
 
-对齐失败会保留整块文字，并标记 `unaligned_text_preserved`，不会编造词时间。没有可靠归属证据时显示 `unknown`。SDK 给出的时间包含其自身后处理，不能视为人工精确边界。
+## 🔍 Scope and validation
 
-## 验证与开发
+Basic5 estimates speaker turns on one main speaker track. Overlapping speech, brief interjections, and distant microphones can reduce transcription or speaker attribution quality. When alignment fails, the full recognized text is preserved with chunk bounds and marked `unaligned_text_preserved`. Ambiguous speaker assignments appear as `unknown`.
 
-```bash
-python3.12 -m venv .venvs/test
-.venvs/test/bin/python -m pip install -e . scipy scikit-learn
-.venvs/test/bin/python -m unittest discover -s tests -v
-```
+Source and CPU behavior tests are documented in [validation](docs/validation.md). Full model inference, GPU resource use, and AliMeeting accuracy have yet to be measured for Basic5. Apple MPS is unsupported.
 
-测试覆盖音频连续切块、Unicode/标点保留、对齐回退、未知说话人、谱聚类退化情况、子进程超时、文件导出和拒绝覆盖。**这些是代码行为检查，不是模型准确率测试。** 本次打包验证情况见 [验证说明](docs/validation.md)。
-
-## 开源与发布
-
-胶水代码 Apache-2.0，ReDimNet 第三方实现 MIT，详见 [THIRD_PARTY.md](THIRD_PARTY.md)、`LICENSE`、`NOTICE`。模型权重和任何用户录音均不打包。下载模型时保留各自上游许可及模型卡。
-
-本项目已准备为独立源码包，尚未由本次任务公开发布。上传仓库前保留 `.gitignore`，不要上传 `models/`、`outputs/`、`config.json`、令牌或私人日志。
+See [Vision](VISION.md) for the roadmap and [Contributing](CONTRIBUTING.md) for the test and packaging workflow. Project code is [Apache-2.0](LICENSE), and the vendored ReDimNet2 implementation is [MIT](vendor/ReDimNet2-LICENSE). See [third-party notices](THIRD_PARTY.md) for the model sources and licenses. The source archive excludes model weights and recordings.
